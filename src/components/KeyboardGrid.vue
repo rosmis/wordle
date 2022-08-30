@@ -1,8 +1,17 @@
 <template>
   <div class="flex flex-col gap-4">
-    <KeyboardRow :keys="keyboard.firstLine"></KeyboardRow>
-    <KeyboardRow :keys="keyboard.secondLine"></KeyboardRow>
-    <KeyboardRow :keys="keyboard.thirdLine"></KeyboardRow>
+    <KeyboardRow
+      :keys="keyboard.firstLine"
+      @keystoke="$emit('keystroke', $event)"
+    />
+    <KeyboardRow
+      :keys="keyboard.secondLine"
+      @keystoke="$emit('keystroke', $event)"
+    />
+    <KeyboardRow
+      :keys="keyboard.thirdLine"
+      @keystoke="$emit('keystroke', $event)"
+    />
   </div>
 </template>
 
