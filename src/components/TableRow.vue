@@ -1,5 +1,5 @@
 <template>
-  <div class="flex gap-4">
+  <div class="flex gap-4" @keyup.enter="consoleLog">
     <TableCell :letter="wordSplitter(0)" />
     <TableCell :letter="wordSplitter(1)" />
     <TableCell :letter="wordSplitter(2)" />
@@ -9,30 +9,31 @@
 </template>
 
 <script setup>
-import { ref, watch } from "vue";
 import TableCell from "./TableCell.vue";
 
 const props = defineProps({
-  keyInput: String,
+  keyArray: Array,
 });
 
-const word = ref([]);
+// const wordLength = computed((length) => {
+//   if(keyArray.length > length) return true
+//   return false
+// })
 
-watch(
-  () => props.keyInput,
-  () => {
-    wordChecker(props.keyInput);
-  }
-);
+// watch(
+//   () => props.keyArray,
+//   () => {
+//     // console.log(props.keyArray);
+//   },
+//   { deep: true }
+// );
 
-function wordChecker(letter) {
-  if (word.value.length > 4) return;
-  if (letter) {
-    word.value.push(letter);
-  }
+function consoleLog() {
+  console.log("test");
 }
 
-function wordSplitter(split) {
-  return word.value[split];
+function wordSplitter(index) {
+  if (!props.keyArray) return;
+  return props.keyArray[index];
 }
 </script>
