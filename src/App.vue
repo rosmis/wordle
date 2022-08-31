@@ -1,6 +1,6 @@
 <template>
   <div class="flex flex-col h-full gap-20">
-    <TableGrid :key-input="keyLog ? keyLog : ''" />
+    <TableGrid :key-input-object="keyLog ? keyLog : ''" />
     <KeyboardGrid @keystroke="keyLog = $event" />
   </div>
 </template>
@@ -10,5 +10,5 @@ import { ref } from "vue";
 import KeyboardGrid from "./components/KeyboardGrid.vue";
 import TableGrid from "./components/TableGrid.vue";
 
-let keyLog = ref("");
+let keyLog = ref({});
 </script>
