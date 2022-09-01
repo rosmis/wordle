@@ -10,8 +10,23 @@
 </template>
 
 <script setup>
-import { ref, watch } from "vue";
+import axios from "axios";
+import { onMounted, ref, watch } from "vue";
+import { options } from "./axios_params.js";
 import TableRow from "./TableRow.vue";
+
+onMounted(() => {
+  if (localStorage.solution) return;
+
+  axios
+    .request(options)
+    .then(function (response) {
+      localStorage.solution = response.data;
+    })
+    .catch(function (error) {
+      console.error(error);
+    });
+});
 
 const props = defineProps({
   keyInputObject: Object,
