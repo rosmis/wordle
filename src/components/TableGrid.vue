@@ -15,13 +15,29 @@ import { onMounted, ref, watch } from "vue";
 import { options } from "./axios_params.js";
 import TableRow from "./TableRow.vue";
 
+// window.localStorage.clear();
+
 onMounted(() => {
-  if (localStorage.solution) return;
+  if (localStorage.wordleState) {
+    const wordleState = JSON.parse(localStorage.getItem("wordleState"));
+    evaluations.value = wordleState.evaluations;
+    rowCounter.value = wordleState.rowCounter;
+    wordObject.value = wordleState.wordObject;
+    return;
+  }
 
   axios
     .request(options)
     .then(function (response) {
-      localStorage.solution = response.data;
+      localStorage.setItem(
+        "wordleState",
+        JSON.stringify({
+          wordObject: wordObject.value,
+          evaluations: evaluations.value,
+          rowCounter: rowCounter.value,
+          solution: response.data,
+        })
+      );
     })
     .catch(function (error) {
       console.error(error);
@@ -83,9 +99,11 @@ function wordChecker(letter) {
 }
 
 function solutionComparison(guessedWord) {
-  const solution = localStorage.solution.split("").map((word) => {
-    return word.toUpperCase();
-  });
+  const solution = JSON.parse(localStorage.getItem("wordleState"))
+    .solution.split("")
+    .map((word) => {
+      return word.toUpperCase();
+    });
 
   guessedWord.forEach((word, index) => {
     if (word === solution[index]) {
@@ -97,6 +115,13 @@ function solutionComparison(guessedWord) {
       return;
     }
     evaluations.value[rowCounter.value].push("absent");
+  });
+
+  localStorage.wordleState = JSON.stringify({
+    solution: JSON.parse(localStorage.getItem("wordleState")).solution,
+    wordObject: wordObject.value,
+    evaluations: evaluations.value,
+    rowCounter: rowCounter.value + 1,
   });
 }
 </script>
