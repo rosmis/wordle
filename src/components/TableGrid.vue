@@ -1,11 +1,11 @@
 <template>
   <div class="flex flex-col gap-4 items-center justify-center">
-    <TableRow :key-array="wordObject[1]" />
-    <TableRow :key-array="wordObject[2]" />
-    <TableRow :key-array="wordObject[3]" />
-    <TableRow :key-array="wordObject[4]" />
-    <TableRow :key-array="wordObject[5]" />
-    <TableRow :key-array="wordObject[6]" />
+    <TableRow :key-array="wordObject[1]" :evaluations="evaluations[1]" />
+    <TableRow :key-array="wordObject[2]" :evaluations="evaluations[2]" />
+    <TableRow :key-array="wordObject[3]" :evaluations="evaluations[3]" />
+    <TableRow :key-array="wordObject[4]" :evaluations="evaluations[4]" />
+    <TableRow :key-array="wordObject[5]" :evaluations="evaluations[5]" />
+    <TableRow :key-array="wordObject[6]" :evaluations="evaluations[6]" />
   </div>
 </template>
 
@@ -41,6 +41,15 @@ let wordObject = ref({
   6: [],
 });
 
+let evaluations = ref({
+  1: [],
+  2: [],
+  3: [],
+  4: [],
+  5: [],
+  6: [],
+});
+
 watch(
   () => props.keyInputObject,
   () => {
@@ -56,8 +65,8 @@ function wordChecker(letter) {
   if (letter === "ENTER") {
     if (wordObjectKeyValue.length < 4) return;
 
+    solutionComparison(wordObjectKeyValue);
     rowCounter.value++;
-    console.log("enter");
     return;
   }
 
@@ -71,5 +80,23 @@ function wordChecker(letter) {
   }
 
   wordObjectKeyValue.push(letter);
+}
+
+function solutionComparison(guessedWord) {
+  const solution = localStorage.solution.split("").map((word) => {
+    return word.toUpperCase();
+  });
+
+  guessedWord.forEach((word, index) => {
+    if (word === solution[index]) {
+      evaluations.value[rowCounter.value].push("correct");
+      return;
+    }
+    if (solution.includes(word)) {
+      evaluations.value[rowCounter.value].push("present");
+      return;
+    }
+    evaluations.value[rowCounter.value].push("absent");
+  });
 }
 </script>
