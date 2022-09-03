@@ -1,5 +1,5 @@
 <template>
-  <div class="flex gap-4" @keyup.enter="consoleLog">
+  <div class="flex gap-4">
     <TableCell :letter="wordSplitter(0)" :evaluation-letter="evaluations[0]" />
     <TableCell :letter="wordSplitter(1)" :evaluation-letter="evaluations[1]" />
     <TableCell :letter="wordSplitter(2)" :evaluation-letter="evaluations[2]" />
@@ -15,10 +15,6 @@ const props = defineProps({
   keyArray: Array,
   evaluations: Array,
 });
-
-function consoleLog() {
-  console.log("test");
-}
 
 function wordSplitter(index) {
   if (!props.keyArray) return;

@@ -3,7 +3,7 @@
     class="border flex border-gray-500 h-10 w-10 items-center justify-center"
     @click="$emit('keystoke', { keyboardInput, id: Math.random() })"
   >
-    <p class="cursor-default">{{ keyboardInput }}</p>
+    <p class="cursor-default text-light-800">{{ keyboardInput }}</p>
   </div>
 </template>
 
