@@ -40,6 +40,7 @@ onMounted(() => {
           evaluations: evaluations.value,
           rowCounter: rowCounter.value,
           solution: response.data,
+          debugMode: false,
         })
       );
     })

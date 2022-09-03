@@ -1,6 +1,6 @@
 <template>
   <div
-    class="border-b flex border-b-gray-500 w-full py-2 px-4 gap-4 justify-end"
+    class="border-b flex border-b-gray-500 border-opacity-50 w-full py-2 px-4 gap-4 justify-end"
   >
     <i
       class="cursor-pointer text-2xl text-light-800 mdi mdi-help-circle-outline"
