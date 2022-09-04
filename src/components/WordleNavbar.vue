@@ -43,10 +43,12 @@ const showSolution = ref(false);
 const solution = ref("");
 
 onMounted(() => {
-  const debugModeState = JSON.parse(
-    localStorage.getItem("wordleState")
-  ).debugMode;
-  if (debugModeState) showSolution.value = true;
-  solution.value = JSON.parse(localStorage.getItem("wordleState")).solution;
+  setTimeout(() => {
+    const debugModeState = JSON.parse(
+      localStorage.getItem("wordleState")
+    ).debugMode;
+    if (debugModeState) showSolution.value = true;
+    solution.value = JSON.parse(localStorage.getItem("wordleState")).solution;
+  }, 1000);
 });
 </script>

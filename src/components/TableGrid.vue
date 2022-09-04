@@ -27,8 +27,9 @@
 
 <script setup>
 import axios from "axios";
+import moment from "moment";
 import { onMounted, ref, watch } from "vue";
-import { options } from "./axios_params.js";
+import { options } from "./axios_params";
 import SettingsModal from "./SettingsModal.vue";
 import TableRow from "./TableRow.vue";
 
@@ -39,40 +40,6 @@ const props = defineProps({
 });
 
 const isGameWon = ref(false);
-
-onMounted(() => {
-  if (localStorage.wordleState) {
-    const wordleState = JSON.parse(localStorage.getItem("wordleState"));
-    const winningState = JSON.parse(
-      localStorage.getItem("wordleState")
-    ).winningStatus;
-    evaluations.value = wordleState.evaluations;
-    rowCounter.value = wordleState.rowCounter;
-    wordObject.value = wordleState.wordObject;
-
-    if (winningState) isGameWon.value = true;
-    return;
-  }
-
-  axios
-    .request(options)
-    .then(function (response) {
-      localStorage.setItem(
-        "wordleState",
-        JSON.stringify({
-          wordObject: wordObject.value,
-          evaluations: evaluations.value,
-          rowCounter: rowCounter.value,
-          solution: response.data,
-          debugMode: false,
-          winningStatus: false,
-        })
-      );
-    })
-    .catch(function (error) {
-      console.error(error);
-    });
-});
 
 let wordObject = ref({
   1: [],
@@ -91,6 +58,84 @@ let evaluations = ref({
   5: [],
   6: [],
 });
+
+onMounted(() => {
+  if (localStorage.wordleState) {
+    const wordleState = JSON.parse(localStorage.getItem("wordleState"));
+    const winningState = JSON.parse(
+      localStorage.getItem("wordleState")
+    ).winningStatus;
+    evaluations.value = wordleState.evaluations;
+    rowCounter.value = wordleState.rowCounter;
+    wordObject.value = wordleState.wordObject;
+
+    if (winningState) isGameWon.value = true;
+    timeNextWordleChecker();
+
+    return;
+  }
+
+  axiosWordRequest();
+});
+
+function axiosWordRequest() {
+  if (localStorage.wordleState) {
+    window.localStorage.clear();
+    // reset default values
+    (wordObject.value = {
+      1: [],
+      2: [],
+      3: [],
+      4: [],
+      5: [],
+      6: [],
+    }),
+      (evaluations.value = {
+        1: [],
+        2: [],
+        3: [],
+        4: [],
+        5: [],
+        6: [],
+      }),
+      (rowCounter.value = 1);
+  }
+
+  axios
+    .request(options)
+    .then(function (response) {
+      localStorage.setItem(
+        "wordleState",
+        JSON.stringify({
+          wordObject: wordObject.value,
+          evaluations: evaluations.value,
+          rowCounter: rowCounter.value,
+          solution: response.data,
+          debugMode: false,
+          winningStatus: false,
+          startingStamp: moment(),
+        })
+      );
+    })
+    .catch(function (error) {
+      console.error(error);
+    });
+
+  timeNextWordleChecker();
+}
+
+function timeNextWordleChecker() {
+  setTimeout(() => {
+    const dateNextWordle = moment(
+      JSON.parse(localStorage.getItem("wordleState")).startingStamp
+    ).add(12, "hours");
+    const currentTime = moment();
+
+    if (moment(currentTime).isAfter(dateNextWordle)) {
+      axiosWordRequest();
+    }
+  }, 1000);
+}
 
 watch(
   () => props.keyInputObject,
@@ -145,6 +190,8 @@ function solutionComparison(guessedWord) {
 
   localStorage.wordleState = JSON.stringify({
     solution: JSON.parse(localStorage.getItem("wordleState")).solution,
+    startingStamp: JSON.parse(localStorage.getItem("wordleState"))
+      .startingStamp,
     wordObject: wordObject.value,
     evaluations: evaluations.value,
     rowCounter: rowCounter.value + 1,

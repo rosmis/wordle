@@ -14,9 +14,23 @@ import WordleHeader from "./components/WordleHeader.vue";
 
 let keyLog = ref({});
 
-function consoleLog() {
-  console.log("works");
-}
+// let date = moment(64800000);
+// let date = ref(moment(64800000));
+// const date = moment();
+// const dateNextWordle = moment(date).add(12, "hours");
+// let timer = dateNextWordle.diff(date, "seconds");
+// console.log(moment(date).isSame(todayDate));
+// const dayBefore = moment(timestamp).subtract(86400, "seconds");
+
+// const time = computed(() => {
+//   return date.value.format("HH:mm:ss");
+// });
+
+// onMounted(() => {
+//   setInterval(() => {
+//     date.value = moment(date.value.subtract(1, "seconds"));
+//   }, 1000);
+// });
 </script>
 
 <style>
