@@ -15,21 +15,43 @@
 </template>
 
 <script setup>
-import { onMounted, ref } from "vue";
+import { onMounted, ref, watch } from "vue";
 
 defineProps({
   title: String,
 });
 
+const emit = defineEmits("toggle");
+
 const isDebugMode = ref(false);
+
+watch(
+  () => isDebugMode.value,
+  () => {
+    if (isDebugMode.value) {
+      localStorage.wordleState = JSON.stringify({
+        ...JSON.parse(localStorage.wordleState),
+        debugMode: true,
+      });
+      emit("toggle", isDebugMode.value);
+      return;
+    }
+
+    localStorage.wordleState = JSON.stringify({
+      ...JSON.parse(localStorage.wordleState),
+      debugMode: false,
+    });
+    emit("toggle", isDebugMode.value);
+  }
+);
 
 onMounted(() => {
   const debugModeState = JSON.parse(
     localStorage.getItem("wordleState")
   ).debugMode;
-
-  if (debugModeState) isDebugMode.value = true;
-
-  // if(isDebugMode)
+  if (debugModeState) {
+    isDebugMode.value = true;
+    return;
+  }
 });
 </script>

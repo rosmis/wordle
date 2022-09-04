@@ -123,6 +123,7 @@ function solutionComparison(guessedWord) {
     wordObject: wordObject.value,
     evaluations: evaluations.value,
     rowCounter: rowCounter.value + 1,
+    debugMode: false,
   });
 }
 </script>
