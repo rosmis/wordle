@@ -18,7 +18,11 @@
       <SettingsModal title="How to play ?" />
     </b-modal>
     <b-modal v-model="openSettingsModal">
-      <SettingsModal title="Settings" @toggle="showSolution = $event" />
+      <SettingsModal
+        title="Settings"
+        screen="settings"
+        @toggle="showSolution = $event"
+      />
     </b-modal>
   </div>
 </template>

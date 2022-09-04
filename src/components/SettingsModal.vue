@@ -4,12 +4,15 @@
       <h2 class="font-bold text-center mb-4 text-2xl text-light-800">
         {{ title }}
       </h2>
-      <div
-        class="border-b flex border-b-gray-500 border-opacity-50 w-full py-4 gap-10 justify-center items-center"
-      >
-        <h3 class="text-xl text-center text-light-800">Debug Mode</h3>
-        <b-switch v-model="isDebugMode" type="is-success"></b-switch>
-      </div>
+      <template v-if="screen === 'settings'">
+        <div
+          class="border-b flex border-b-gray-500 border-opacity-50 w-full py-4 gap-10 justify-center items-center"
+        >
+          <h3 class="text-xl text-center text-light-800">Debug Mode</h3>
+          <b-switch v-model="isDebugMode" type="is-success"></b-switch>
+        </div>
+      </template>
+      <slot name="content"></slot>
     </div>
   </div>
 </template>
@@ -19,6 +22,7 @@ import { onMounted, ref, watch } from "vue";
 
 defineProps({
   title: String,
+  screen: String,
 });
 
 const emit = defineEmits("toggle");
