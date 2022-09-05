@@ -8,29 +8,14 @@
         :evaluations="evaluations[index]"
       />
     </div>
-    <b-modal v-model="isGameWon" :can-cancel="false">
-      <SettingsModal title="Game Won !">
-        <template #content>
-          <div
-            class="border-b flex border-b-gray-500 border-opacity-50 w-full py-4 gap-10 justify-center items-center"
-          >
-            <h3 class="text-xl text-center text-light-800">Number of tries</h3>
-            <p class="text-lg text-center text-light-800">
-              {{ rowCounter - 1 }}
-            </p>
-          </div>
-        </template>
-      </SettingsModal>
-    </b-modal>
   </div>
 </template>
 
 <script setup>
 import axios from "axios";
 import moment from "moment";
-import { onMounted, ref, watch } from "vue";
+import { computed, onMounted, ref, watch } from "vue";
 import { options } from "./axios_params";
-import SettingsModal from "./SettingsModal.vue";
 import TableRow from "./TableRow.vue";
 
 // window.localStorage.clear();
@@ -39,7 +24,10 @@ const props = defineProps({
   keyInputObject: Object,
 });
 
+const emit = defineEmits(["timer", "isGameWon", "isGameLost"]);
+
 const isGameWon = ref(false);
+const rowCounter = ref(1);
 
 let wordObject = ref({
   1: [],
@@ -113,7 +101,7 @@ function axiosWordRequest() {
           solution: response.data,
           debugMode: false,
           winningStatus: false,
-          startingStamp: moment(),
+          startingStamp: moment().format(),
         })
       );
     })
@@ -128,12 +116,34 @@ function timeNextWordleChecker() {
   setTimeout(() => {
     const dateNextWordle = moment(
       JSON.parse(localStorage.getItem("wordleState")).startingStamp
-    ).add(12, "hours");
+    )
+      .add(12, "hours")
+      .format();
+
     const currentTime = moment();
 
+    // at page reload if current time is after dateNextWordle time trigger axios request
     if (moment(currentTime).isAfter(dateNextWordle)) {
       axiosWordRequest();
     }
+
+    const timeRemaining = ref(
+      moment(dateNextWordle).diff(currentTime, "milliseconds")
+    );
+
+    const timer = computed(() => {
+      return moment.duration(timeRemaining.value);
+    });
+
+    setInterval(() => {
+      timeRemaining.value = moment(timeRemaining.value).subtract(
+        1000,
+        "milliseconds"
+      );
+
+      emit("timer", timer);
+      if (timeRemaining.value <= 0) axiosWordRequest();
+    }, 1000);
   }, 1000);
 }
 
@@ -143,8 +153,6 @@ watch(
     wordChecker(props.keyInputObject.keyboardInput);
   }
 );
-
-const rowCounter = ref(1);
 
 function wordChecker(letter) {
   const wordObjectKeyValue = wordObject.value[rowCounter.value];
@@ -209,6 +217,7 @@ function solutionComparison(guessedWord) {
       winningStatus: true,
     });
     isGameWon.value = true;
+    emit("isGameWon", isGameWon.value);
   }
 }
 </script>
