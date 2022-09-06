@@ -8,11 +8,6 @@
       @isGameLost="gameStatus = $event"
     />
     <KeyboardGrid @keystroke="keyLog = $event" />
-    <h1>
-      {{ moment.duration(timerApp).hours() }}h:{{
-        moment.duration(timerApp).minutes()
-      }}m:{{ moment.duration(timerApp).seconds() }}s
-    </h1>
 
     <b-modal
       v-if="isGameWon || isGameLost"
@@ -82,7 +77,6 @@ onMounted(() => {
     if (rowCount === 7) {
       isGameLost.value = true;
       gameStatus.value = { gameStatus: true };
-      console.log(isGameLost.value);
     }
     rowCounter.value = rowCount - 1;
   }
