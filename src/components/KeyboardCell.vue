@@ -33,7 +33,7 @@ const emit = defineEmits("keystroke");
 const keyboardInput = props.keyInput.toUpperCase();
 
 onMounted(() => {
-  window.addEventListener("keydown", (e) => {
+  window.addEventListener("keydown", e => {
     if (e.key === props.keyInput)
       emit("keystroke", { keyboardInput, id: Math.random() });
   });
