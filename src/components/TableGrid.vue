@@ -169,7 +169,7 @@ function wordChecker(letter) {
     return;
   }
 
-  if (letter === "DEL") {
+  if (letter === "BACKSPACE") {
     wordObjectKeyValue.pop();
     return;
   }

@@ -4,7 +4,7 @@
       v-for="key in keys"
       :key="key"
       :key-input="key"
-      @keystoke="$emit('keystoke', $event)"
+      @keystroke="$emit('keystroke', $event)"
     />
   </div>
 </template>
