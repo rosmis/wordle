@@ -1,6 +1,5 @@
 .DS_Store
 node_modules
-/src/components/axios_params.js
 
 
 # local env files
