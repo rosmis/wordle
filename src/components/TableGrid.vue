@@ -162,6 +162,10 @@ function wordChecker(letter) {
 
     solutionComparison(wordObjectKeyValue);
     rowCounter.value++;
+
+    if (rowCounter.value === 7) {
+      emit("isGameLost", { isGameLost: true, rowCount: rowCounter.value });
+    }
     return;
   }
 
@@ -217,7 +221,10 @@ function solutionComparison(guessedWord) {
       winningStatus: true,
     });
     isGameWon.value = true;
-    emit("isGameWon", isGameWon.value);
+    emit("isGameWon", {
+      isGameWon: isGameWon.value,
+      rowCount: rowCounter.value,
+    });
   }
 }
 </script>

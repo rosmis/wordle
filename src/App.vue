@@ -5,6 +5,7 @@
       :key-input-object="keyLog ? keyLog : ''"
       @timer="timerBinding($event)"
       @isGameWon="gameStatus = $event"
+      @isGameLost="gameStatus = $event"
     />
     <KeyboardGrid @keystroke="keyLog = $event" />
     <h1>
@@ -13,13 +14,19 @@
       }}m:{{ moment.duration(timerApp).seconds() }}s
     </h1>
 
-    <b-modal v-if="isGameWon" v-model="isGameWon" :can-cancel="false">
-      <SettingsModal title="Game Won !">
+    <b-modal
+      v-if="isGameWon || isGameLost"
+      v-model="Object.values(gameStatus)[0]"
+      :can-cancel="false"
+    >
+      <SettingsModal :title="isGameWon ? 'Game Won !' : 'Game Lost !'">
         <template #content>
           <div
             class="border-b flex border-b-gray-500 border-opacity-50 w-full py-4 gap-10 justify-center items-center"
           >
-            <h3 class="text-xl text-center text-light-800">Number of tries</h3>
+            <h3 class="text-xl text-center text-light-800">
+              Number of tries :
+            </h3>
             <p class="text-lg text-center text-light-800">
               {{ rowCounter }}
             </p>
@@ -28,7 +35,7 @@
             class="border-b flex flex-col border-b-gray-500 border-opacity-50 w-full py-4 gap-8 justify-center items-center"
           >
             <h3 class="font-bold text-xl text-center text-light-800">
-              NEXT WORDLE IN:
+              NEXT WORDLE IN :
             </h3>
             <p class="text-center text-3xl text-light-800">
               {{ moment.duration(timerApp).hours() }}:{{
@@ -50,11 +57,13 @@ import TableGrid from "./components/TableGrid.vue";
 import WordleHeader from "./components/WordleHeader.vue";
 
 let keyLog = ref({});
-let gameStatus = ref();
+let gameStatus = ref({});
 
 const isGameWon = ref(false);
+const isGameLost = ref(false);
 const timerApp = ref("");
 const rowCounter = ref();
+
 function timerBinding(event) {
   timerApp.value = event;
 }
@@ -66,14 +75,32 @@ onMounted(() => {
     ).winningStatus;
     const rowCount = JSON.parse(localStorage.getItem("wordleState")).rowCounter;
 
-    if (winningState) isGameWon.value = true;
+    if (winningState) {
+      isGameWon.value = true;
+      gameStatus.value = { gameStatus: true };
+    }
+    if (rowCount === 7) {
+      isGameLost.value = true;
+      gameStatus.value = { gameStatus: true };
+      console.log(isGameLost.value);
+    }
     rowCounter.value = rowCount - 1;
   }
 });
 
 watch(
   () => gameStatus.value,
-  () => (isGameWon.value = true)
+  () => {
+    if (gameStatus.value.isGameWon) {
+      (isGameWon.value = gameStatus.value.isGameWon),
+        (rowCounter.value = gameStatus.value.rowCount);
+      return;
+    }
+    if (gameStatus.value.isGameLost) {
+      (isGameLost.value = gameStatus.value.isGameLost),
+        (rowCounter.value = gameStatus.value.rowCount - 1);
+    }
+  }
 );
 </script>
 
