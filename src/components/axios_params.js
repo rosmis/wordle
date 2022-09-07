@@ -3,7 +3,7 @@ const options = {
     url: "https://random-words5.p.rapidapi.com/getRandom",
     params: { wordLength: "5" },
     headers: {
-      'X-RapidAPI-Key': '4b4e7879f2msh9885e594e0c931fp15e474jsn4d84868494af',
+      'X-RapidAPI-Key': 'ea716c4295mshfbc5b8807764fb0p153f06jsnc5b8d2a74f07',
       'X-RapidAPI-Host': 'random-words5.p.rapidapi.com'
     },
 };
