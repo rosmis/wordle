@@ -8,6 +8,7 @@
         evaluationLetter === 'present',
       'bg-green-200 text-gray-500 border-2 border-green-600':
         evaluationLetter === 'correct',
+      'letter-transition': letter,
     }"
   >
     {{ letter }}
@@ -20,3 +21,22 @@ defineProps({
   evaluationLetter: String,
 });
 </script>
+
+<style scoped>
+.letter-transition {
+  animation: letter 0.2s cubic-bezier(0.98, 0, 0.16, 1.45);
+}
+@keyframes letter {
+  0% {
+    transform: scale(1, 1);
+  }
+
+  50% {
+    transform: scale(1.2, 1.2);
+  }
+
+  100% {
+    transform: scale(1, 1);
+  }
+}
+</style>

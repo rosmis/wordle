@@ -6,6 +6,8 @@
         :key="index"
         :key-array="wordObject[index]"
         :evaluations="evaluations[index]"
+        :row-counter="rowCounter"
+        @enter="wordChecker('ENTER')"
       />
     </div>
   </div>
@@ -184,7 +186,7 @@ function wordChecker(letter) {
 function solutionComparison(guessedWord) {
   const solutionArray = JSON.parse(localStorage.getItem("wordleState"))
     .solution.split("")
-    .map((word) => {
+    .map(word => {
       return word.toUpperCase();
     });
 
