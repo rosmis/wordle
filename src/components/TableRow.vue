@@ -29,26 +29,15 @@ const props = defineProps({
 const showReturnKey = ref(false);
 
 watch(
-  () => props.keyArray,
+  () => [props.keyArray, props.evaluations],
   () => {
-    if (props.keyArray.length === 5) {
+    if (props.keyArray.length === 5 && !props.evaluations.length) {
       showReturnKey.value = true;
       return;
     }
     showReturnKey.value = false;
   },
   { deep: true }
-);
-
-// filthy way of checking when component is mounted if array is already full, then toggling showReturnKey to false (when only want to show the return key on the selected row)
-watch(
-  () => props.evaluations,
-  () => {
-    if (props.keyArray.length === 5) {
-      showReturnKey.value = false;
-    }
-  },
-  { immediate: true }
 );
 
 function wordSplitter(index) {

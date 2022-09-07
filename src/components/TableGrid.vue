@@ -160,7 +160,7 @@ function wordChecker(letter) {
   const wordObjectKeyValue = wordObject.value[rowCounter.value];
 
   if (letter === "ENTER") {
-    if (wordObjectKeyValue.length < 4) return;
+    if (wordObjectKeyValue.length < 5) return;
 
     solutionComparison(wordObjectKeyValue);
     rowCounter.value++;
