@@ -1,5 +1,8 @@
 <template>
-  <div class="flex gap-4 items-center relative">
+  <div
+    class="flex gap-4 items-center relative"
+    :class="{ 'gap-2': tutorial === true }"
+  >
     <TableCell :letter="wordSplitter(0)" :evaluation-letter="evaluations[0]" />
     <TableCell :letter="wordSplitter(1)" :evaluation-letter="evaluations[1]" />
     <TableCell :letter="wordSplitter(2)" :evaluation-letter="evaluations[2]" />
@@ -24,6 +27,7 @@ const props = defineProps({
   keyArray: Array,
   evaluations: Array,
   rowCounter: Number,
+  tutorial: Boolean,
 });
 
 const showReturnKey = ref(false);

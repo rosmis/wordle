@@ -1,5 +1,5 @@
 <template>
-  <div class="rounded-md m-auto max-w-screen-sm bg-gray-700 py-5">
+  <div class="rounded-md m-auto max-w-screen-sm bg-gray-700 p-5">
     <div class="flex flex-col items-center">
       <h2 class="font-bold text-center mb-4 text-2xl text-light-800">
         {{ title }}
@@ -10,6 +10,18 @@
         >
           <h3 class="text-xl text-center text-light-800">Debug Mode</h3>
           <b-switch v-model="isDebugMode" type="is-success"></b-switch>
+        </div>
+        <div
+          class="border-b flex border-b-gray-500 border-opacity-50 w-full py-4 gap-10 justify-center items-center"
+        >
+          <h3 class="text-lg text-center text-light-800">
+            Check out my portfolio !
+          </h3>
+          <a
+            class="text-sm text-gray-400 hover:text-gray-500"
+            href="https://bit.ly/rosmis-portfolio"
+            >Link to my portfolio</a
+          >
         </div>
       </template>
       <slot name="content"></slot>

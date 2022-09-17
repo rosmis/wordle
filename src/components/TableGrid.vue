@@ -14,10 +14,8 @@
 </template>
 
 <script setup>
-import axios from "axios";
 import moment from "moment";
 import { computed, onMounted, ref, watch } from "vue";
-import { options } from "./axios_params";
 import TableRow from "./TableRow.vue";
 
 // window.localStorage.clear();
@@ -91,25 +89,27 @@ function axiosWordRequest() {
       (rowCounter.value = 1);
   }
 
-  axios
-    .request(options)
-    .then(function (response) {
-      localStorage.setItem(
-        "wordleState",
-        JSON.stringify({
-          wordObject: wordObject.value,
-          evaluations: evaluations.value,
-          rowCounter: rowCounter.value,
-          solution: response.data,
-          debugMode: false,
-          winningStatus: false,
-          startingStamp: moment().format(),
-        })
-      );
+  // axios
+  //   .request(options)
+  //   .then(function (response) {
+
+  //   })
+  //   .catch(function (error) {
+  //     console.error(error);
+  //   });
+
+  localStorage.setItem(
+    "wordleState",
+    JSON.stringify({
+      wordObject: wordObject.value,
+      evaluations: evaluations.value,
+      rowCounter: rowCounter.value,
+      solution: "entry",
+      debugMode: false,
+      winningStatus: false,
+      startingStamp: moment().format(),
     })
-    .catch(function (error) {
-      console.error(error);
-    });
+  );
 
   timeNextWordleChecker();
 }
