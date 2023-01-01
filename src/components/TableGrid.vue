@@ -14,10 +14,11 @@
 </template>
 
 <script setup>
+import axios from "axios";
 import moment from "moment";
 import { computed, onMounted, ref, watch } from "vue";
+import { options } from "./axios_params";
 import TableRow from "./TableRow.vue";
-
 // window.localStorage.clear();
 
 const props = defineProps({
